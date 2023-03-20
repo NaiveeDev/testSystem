@@ -137,7 +137,7 @@ void Auth::Àuth(User& Person) {
 
 	std::cout << "Ëîãèí:";
 	std::getline(cin, temp_Login);
-	
+
 	std::cout << "Ïàðîëü:";
 	std::getline(cin, temp_Password);
 	Person.setPassword(temp_Password);
