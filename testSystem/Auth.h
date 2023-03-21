@@ -9,7 +9,9 @@ public:
 
 	void Register(User& Person);
 	void Login(User& Person);
+	void AuthMenu(User& Person);
 	
+
 
 
 

@@ -1,13 +1,16 @@
-#include "Auth.h"
+ï»¿#include "Auth.h"
 #include "menuFunc.h"
+#include "md5.h"
+#pragma comment(lib,"shell32")
 
 
+using std::cout; using std::endl;
 
 
 //LOGIN VALIDATION
 void AlreadyLogin(User Person) {
 
-	ifstream File("UsersDB//" + Person.getLogin() + ".txt");
+	std::ifstream File("UsersDB//" + Person.getLogin() + ".txt");
 
 	if (File) {
 
@@ -19,10 +22,12 @@ void AlreadyLogin(User Person) {
 		Frame();
 		gotoxy(x, y);
 
-		std::cout << "Ïîëüçîâàòåëü óæå çàðåãèñòðèðîâàí!" << std::endl;
-
+		std::cout << "ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ ÑƒÐ¶Ðµ Ð·Ð°Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½!" << std::endl;
 		Sleep(1200);
-		exit(0);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
 	}	
 }
 
@@ -34,9 +39,9 @@ bool withSpace(const std::string& str) {
 	}
 	return false;
 }
-void PasswordValid(User Person) {
+void PasswordValid(User Person, std::string TempPassword) {
 
-	if (withSpace(Person.getPassword()))
+	if (withSpace(TempPassword))
 	{
 		int x, y;
 		x = 2;
@@ -44,12 +49,14 @@ void PasswordValid(User Person) {
 
 		SetColor(LightRed, Black);
 		Frame();
-		gotoxy(x, y);
+		gotoxy(22, 9);
 
-		std::cout << "Â ïàðîëå íå ìîæåò áûòü ïðîáåëîâ!" << std::endl;
-
+		std::cout << "Ð’ Ð¿Ð°Ñ€Ð¾Ð»Ðµ Ð½Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ñ€Ð¾Ð±ÐµÐ»Ð¾Ð²!" << std::endl;
 		Sleep(1200);
-		exit(0);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
 	}
 
 }
@@ -74,12 +81,14 @@ void PhoneNumberValid(User Person) {
 
 		SetColor(LightRed, Black);
 		Frame();
-		gotoxy(x, y);
+		gotoxy(24, 9);
 
-		std::cout << "Â íîìåðå òåëåôîíà íå ìîæåò áûòü áóêâ!" << std::endl;
-
+		std::cout << "ÐŸÑ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð½Ð¾Ð¼ÐµÑ€Ð°!" << std::endl;
 		Sleep(1200);
-		exit(NULL);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
 	}
 
 }
@@ -93,41 +102,43 @@ void Auth::Register(User& Person) {
 	Frame();
 	gotoxy(34, 1);
 	SetColor(LightGreen, Black);
-	std::cout << "ÐÅÃÈÑÒÐÀÖÈß";
+	cout << "Ð Ð•Ð“Ð˜Ð¡Ð¢Ð ÐÐ¦Ð˜Ð¯";
 
 
 	//LOGIN
 	SetColor(White, Black);
 	gotoxy(x, y);
-	std::cout << "Ëîãèí: ";
-	std::getline(cin, temp_Login);
+	cout << "Ð›Ð¾Ð³Ð¸Ð½: ";
+	std::getline(std::cin, temp_Login);
 	Person.setLogin(temp_Login);
 	AlreadyLogin(Person);
 
 	//PASSWORD
 	gotoxy(x, ++y);
-	std::cout << "Ïàðîëü: ";
-	std::getline(cin, temp_Password);
-	Person.setPassword(temp_Password);
-	PasswordValid(Person);
+	cout << "ÐŸÐ°Ñ€Ð¾Ð»ÑŒ: ";
+	std::getline(std::cin, temp_Password);
+	PasswordValid(Person, temp_Password);
+	Person.setPassword(md5(temp_Password));
+	
 
 	//PHONE NUMBER
 	gotoxy(x, ++y);
-	std::cout << "Íîìåð òåëåôîíà: ";
-	std::getline(cin, temp_PhoneNumber);
+	cout << "ÐÐ¾Ð¼ÐµÑ€ Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð°: ";
+	std::getline(std::cin, temp_PhoneNumber);
 	Person.setPhoneNumber(temp_PhoneNumber);
 	PhoneNumberValid(Person);
 
 	//FILE READER
-	ofstream File("UsersDB//" + Person.getLogin() + ".txt", ios::app);
+	std::ofstream File("UsersDB//" + Person.getLogin() + ".txt", std::ios::app);
 	if (File.is_open()) {
 		File << Person.getLogin() << "\n";
 		File << Person.getPassword() << "\n";
 		File << Person.getPhoneNumber();
 		File.close();
+		AuthMenu(Person);
 	}
 	else {
-		std::cerr << "Îøèáêà, ôàéë íå îòêðûò!\n";
+		std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°, Ñ„Ð°Ð¹Ð» Ð½Ðµ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚!\n";
 	}
 
 }
@@ -140,32 +151,37 @@ void Auth::Login(User& Person) {
 
 	gotoxy(34, 1);
 	SetColor(LightGreen, Black);
-	cout << "ÀÂÒÎÐÈÇÀÖÈß";
+	cout << "ÐÐ’Ð¢ÐžÐ Ð˜Ð—ÐÐ¦Ð˜Ð¯";
 
 	int x = 3, y = 3;
 
 	SetColor(White, Black);
 	gotoxy(x, y);
 	
-	std::cout << "Ëîãèí: ";
-	std::getline(cin, temp_Login);
+	cout << "Ð›Ð¾Ð³Ð¸Ð½: ";
+	std::getline(std::cin, temp_Login);
 	
-	ifstream regFile("UsersDB//" + temp_Login + ".txt");
+	std::ifstream regFile("UsersDB//" + temp_Login + ".txt");
 	if (!regFile) {
 
 		system("cls");
 		Frame();
 		gotoxy(28, 9);
 		SetColor(LightRed, Black);
-		cout << "Ïîëüçîâàòåëü íå íàéäåí!" << endl;
+		cout << "ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½!" << endl;
+		Sleep(1200);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
 
-		exit(0);
+
 	}
 	std::getline(regFile, temp_Login);
 	
 	gotoxy(x, ++y);
-	std::cout << "Ïàðîëü: ";
-	std::getline(cin, temp_Password);
+	std::cout << "ÐŸÐ°Ñ€Ð¾Ð»ÑŒ: ";
+	std::getline(std::cin, temp_Password);
 	//Person.setPassword(temp_Password);
 
 	
@@ -176,20 +192,28 @@ void Auth::Login(User& Person) {
 		Frame();
 
 		std::getline(regFile, filePassword);
-		if (filePassword == temp_Password) {
+		if (filePassword == md5(temp_Password)) {
 			gotoxy(29, 9);
 			SetColor(LightGreen, Black);
-			cout << "Àâòîðèçàöèÿ óñïåøíà!" << endl;
+			cout << "ÐÐ²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ñ ÑƒÑÐ¿ÐµÑˆÐ½Ð°!" << endl;
 			regFile.close();
 			Sleep(1500);
+			system("cls");
+			SetColor(White, Black);
 			
 		}
 		else {
 			gotoxy(26, 9);
 			SetColor(LightRed, Black);
-			cout << "Íåâåðíûé ëîãèí èëè ïàðîëü" << endl;
+			cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð»Ð¾Ð³Ð¸Ð½ Ð¸Ð»Ð¸ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ" << endl;
 			regFile.close();
 			Sleep(1500);
+			system("cls");
+			SetColor(White, Black);
+
+			Auth* instance = new Auth();
+			instance->AuthMenu(Person);
+
 		}
 	} 
 	
@@ -198,5 +222,39 @@ void Auth::Login(User& Person) {
 	
 	
 
+
+}
+
+void Auth::AuthMenu(User& Person) {
+	
+	Frame();
+	ConsoleCursor(false);
+
+	Menu menu;
+
+	std::vector<std::string> objMenu { 
+		"> Ð—ÐÐ Ð•Ð“Ð˜Ð¡Ð¢Ð Ð˜Ð ÐžÐ’ÐÐ¢Ð¬Ð¡Ð¯", 
+		"> Ð’ÐžÐ™Ð¢Ð˜", 
+		"> GITHUB",
+		"> Ð’Ð«Ð™Ð¢Ð˜" 
+	};
+
+
+	int select = menu.select_vertical(objMenu, Center, 8);
+
+	switch (select)
+	{
+	case 0:
+		Register(Person);
+	case 1:
+		Login(Person);
+	case 2:
+
+		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
+		AuthMenu(Person);
+	default:
+		break;
+	}
+	
 
 }

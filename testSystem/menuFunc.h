@@ -1,13 +1,17 @@
 #pragma once
 #include "imports.h"
 
-
-using namespace std;
+using std::cout; using std::endl;
 
 
 enum DIRECTION
 {
 	UP_DIR = 72, DOWN_DIR = 80, LEFT_DIR = 75, RIGHT_DIR = 77, ESC = 27, ENTER = 13
+};
+
+enum HorizontalAlignment
+{
+	Center, Left, Right
 };
 
 enum class HORIZONTAL_POSITION
@@ -69,161 +73,24 @@ inline void Frame()
 {
 	gotoxy(0, 0);
 	setlocale(LC_ALL, "C");
-	cout << static_cast <char> (201);
+	std::cout << static_cast <char> (201);
 	for (int i = 0; i < 78; i++)
-		cout << static_cast <char> (205);
-	cout << static_cast <char> (187);
+		std::cout << static_cast <char> (205);
+	std::cout << static_cast <char> (187);
 
 	for (int j = 0; j < 18; j++)
 	{
-		cout << static_cast <char> (186);
+		std::cout << static_cast <char> (186);
 		for (int i = 0; i < 78; i++)
-			cout << " ";
-		cout << static_cast <char> (186);
+			std::cout << " ";
+		std::cout << static_cast <char> (186);
 	}
 
-	cout << static_cast <char> (200);
+	std::cout << static_cast <char> (200);
 	for (int i = 0; i < 78; i++)
-		cout << static_cast <char> (205);
-	cout << static_cast <char> (188);
+		std::cout << static_cast <char> (205);
+	std::cout << static_cast <char> (188);
 	setlocale(LC_ALL, "Russian");
-}
-
-inline int vertical_menu(char** menuItem, HORIZONTAL_POSITION hp, VERTICAL_POSITION vp, ALLIGNMENT allignment)
-{
-
-	HANDLE wHnd = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
-	GetConsoleScreenBufferInfo(wHnd, &consoleInfo);
-	int width = consoleInfo.dwSize.X;
-	int height = consoleInfo.dwSize.Y;
-
-	CONSOLE_CURSOR_INFO structCursorInfo;
-	GetConsoleCursorInfo(wHnd, &structCursorInfo);
-	structCursorInfo.bVisible = FALSE;
-	SetConsoleCursorInfo(wHnd, &structCursorInfo);
-
-
-
-	int size = _msize(menuItem) / sizeof(char*);
-	int maxLength = 0;
-	for (size_t i = 0; i < size; i++)
-	{
-		if (strlen(menuItem[i]) > maxLength)
-			maxLength = strlen(menuItem[i]);
-	}
-
-	int x, y;
-
-	switch (hp)
-	{
-	case HORIZONTAL_POSITION::LEFT:     x = 1;                       break;
-	case HORIZONTAL_POSITION::CENTER:   x = (width - maxLength) / 2; break;
-	case HORIZONTAL_POSITION::RIGHT:    x = width - maxLength - 1;   break;
-	}
-
-	switch (vp)
-	{
-	case VERTICAL_POSITION::TOP:      y = 1;                   break;
-	case VERTICAL_POSITION::CENTER:   y = (height - size) / 2; break;
-	case VERTICAL_POSITION::BOTTOM:   y = height - size - 1;   break;
-	}
-
-	char** menuItemChanged = new char* [size];
-	char space[] = "                              ";
-	for (size_t i = 0; i < size; i++)
-	{
-		menuItemChanged[i] = new char[maxLength + 1];
-		menuItemChanged[i][0] = '\0';
-		switch (allignment)
-		{
-		case ALLIGNMENT::LEFT:
-			strcat(menuItemChanged[i], menuItem[i]);
-			strncat(menuItemChanged[i], space, maxLength - strlen(menuItem[i]));
-			break;
-		case ALLIGNMENT::CENTER:
-			strncat(menuItemChanged[i], space, (maxLength - strlen(menuItem[i])) / 2);
-			strcat(menuItemChanged[i], menuItem[i]);
-			strncat(menuItemChanged[i], space, maxLength - strlen(menuItem[i]) - (maxLength - strlen(menuItem[i])) / 2);
-			break;
-		case ALLIGNMENT::RIGHT:
-			strncat(menuItemChanged[i], space, maxLength - strlen(menuItem[i]));
-			strcat(menuItemChanged[i], menuItem[i]);
-			break;
-		}
-
-	}
-
-	int position = 0;
-
-	char choise;
-
-	do
-	{
-		for (size_t i = 0; i < size; i++)
-		{
-			if (i == position)
-			{
-				SetColor(Black, White);
-			}
-			else
-			{
-				SetColor(White, Black);
-			}
-			gotoxy(x, y + i);
-			cout << setw(maxLength) << menuItemChanged[i];
-		}
-
-		//click
-		choise = _getch();
-
-		switch (choise)
-		{
-		case UP_DIR:
-			if (position > 0)
-				position--;
-			break;
-		case DOWN_DIR:
-			if (position < size - 1)
-				position++;
-			break;
-		case ESC:
-			return -1;
-
-		default: break;
-		}
-	} while (choise != ENTER);
-
-	for (size_t i = 0; i < 2; i++)
-	{
-
-		SetColor(White, Black);
-		gotoxy(x, y + position);
-		cout << setw(maxLength) << menuItemChanged[position];
-		Sleep(200);
-
-		SetColor(Black, White);
-		gotoxy(x, y + position);
-		cout << setw(maxLength) << menuItemChanged[position];
-		Sleep(200);
-	}
-	SetColor(White, Black);
-	structCursorInfo.bVisible = TRUE;
-	SetConsoleCursorInfo(wHnd, &structCursorInfo);
-
-	///// Alt CLS
-	char* voidItem = new char[maxLength + 1];
-	for (size_t i = 0; i < maxLength; i++) voidItem[i] = ' ';
-	voidItem[maxLength] = '\0';
-	for (size_t i = 0; i < size; i++)
-	{
-		gotoxy(x, y + i);
-		cout << voidItem;
-	}
-
-	//system("cls");
-	return position;
 }
 
 inline void ClearMemory(char** arr)
@@ -234,4 +101,95 @@ inline void ClearMemory(char** arr)
 		delete[] arr[i];
 	}
 	delete[] arr;
+}
+
+class Menu {
+public:
+	static int select_vertical(std::vector <std::string> menu, HorizontalAlignment ha, int y = 12)
+	{
+		HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO start_attribute;
+		GetConsoleScreenBufferInfo(hStdOut, &start_attribute);
+		int backColor = start_attribute.wAttributes & 15;
+		int textColor = (start_attribute.wAttributes >>= 4) & 15;
+		int maxLen = 0;
+		for (size_t i = 0; i < menu.size(); i++)
+		{
+			menu[i] = " " + menu[i] + " ";
+			if (menu[i].length() > maxLen)
+				maxLen = menu[i].length();
+		}
+		int x = 0;
+		switch (ha)
+		{
+		case Center: x = 40 - maxLen / 2; break;
+		case Left:   x = 0;	              break;
+		case Right:  x = 80 - maxLen;     break;
+		}
+		char c;
+		int pos = 0;
+		do
+		{
+			for (int i = 0; i < menu.size(); i++)
+			{
+				if (i == pos)
+				{
+					SetColor(textColor, backColor);
+					gotoxy(x, y + i);
+					cout << std::setw(maxLen) << std::left;
+					gotoxy(x, y + i);
+					cout << menu[i] << endl;
+					SetColor(backColor, textColor);
+				}
+				else
+				{
+					SetColor(backColor, textColor);
+					gotoxy(x, y + i);
+					cout << std::setw(maxLen) << std::left;
+					gotoxy(x, y + i);
+					cout << menu[i] << endl;
+					SetColor(textColor, backColor);
+				}
+			}
+			c = _getch();
+			switch (c)
+			{
+			case 72: if (pos > 0)               pos--; break; // up
+			case 80: if (pos < menu.size() - 1) pos++; break; // down
+			case 13: break;
+			}
+		} while (c != 13);
+
+		for (size_t i = 0; i < 2; i++)
+		{
+			SetColor(backColor, textColor);
+			gotoxy(x, y + pos);
+			cout << std::setw(maxLen) << std::left;
+			gotoxy(x, y + pos);
+			cout << menu[pos] << endl;
+			Sleep(200);
+			SetColor(textColor, backColor);
+			gotoxy(x, y + pos);
+			cout << std::setw(maxLen) << std::left;
+			gotoxy(x, y + pos);
+			cout << menu[pos] << endl;
+			SetColor(backColor, textColor);
+			Sleep(200);
+		}
+		SetColor(backColor, textColor);
+		system("cls");
+		return pos;
+	}
+
+};
+
+void ConsoleCursor(bool isVisible = true) {
+
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cursorInfo;
+
+	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
+	cursorInfo.bVisible = isVisible;
+	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+
 }

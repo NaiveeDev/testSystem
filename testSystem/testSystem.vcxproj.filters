@@ -33,6 +33,9 @@
     <ClCompile Include="User.cpp">
       <Filter>User</Filter>
     </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menuFunc.h">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="User.h">
       <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
