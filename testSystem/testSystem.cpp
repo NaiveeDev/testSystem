@@ -10,7 +10,8 @@ int main(int argc, char* argv[]) {
     
     //Task
     //1. Проверка на пустое поле при регистрации
-    //2. Администратора
+    //2. Application Run
+    //3. Администратора
    
 
     User Person;
