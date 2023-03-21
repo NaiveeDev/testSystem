@@ -1,6 +1,6 @@
 ﻿#include "imports.h"
-#include "Auth//Auth.h"
-#include "User//User.h"
+#include "Auth.h"
+#include "User.h"
 
 
 
@@ -10,9 +10,9 @@ int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "ru");
     
     User Person;
-    Authentication auth;
+    Auth auth;
 
     //auth.Register(Person);
-    auth.Аuth(Person);
+    auth.Login(Person);
 
 }

@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include "imports.h"
-#include "User//User.h"
+#include "User.h"
 
 
-class Authentication {
+class Auth {
 
 public:
 
 	void Register(User& Person);
-	void Auth(User& Person);
+	void Login(User& Person);
 	
 
 

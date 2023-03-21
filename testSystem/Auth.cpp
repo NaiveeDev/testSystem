@@ -1,4 +1,4 @@
-#include "Auth//Auth.h"
+#include "Auth.h"
 #include "menuFunc.h"
 
 
@@ -85,7 +85,7 @@ void PhoneNumberValid(User Person) {
 }
 
 
-void Authentication::Register(User& Person) {
+void Auth::Register(User& Person) {
 
 	std::string temp_Login, temp_Password, temp_PhoneNumber;
 	int x = 3, y = 3;
@@ -132,7 +132,7 @@ void Authentication::Register(User& Person) {
 
 }
 
-void Authentication::Àuth(User& Person) {
+void Auth::Login(User& Person) {
 
 	std::string temp_Login, temp_Password, filePassword;
 
