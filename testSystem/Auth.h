@@ -3,13 +3,13 @@
 #include "User//User.h"
 
 
-class Auth {
+class Authentication {
 
 public:
 
 	void Register(User& Person);
-	void Àuth(User& Person);
-
+	void Auth(User& Person);
+	
 
 
 

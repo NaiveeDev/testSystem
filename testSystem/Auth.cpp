@@ -2,6 +2,8 @@
 #include "menuFunc.h"
 
 
+
+
 //LOGIN VALIDATION
 void AlreadyLogin(User Person) {
 
@@ -83,17 +85,19 @@ void PhoneNumberValid(User Person) {
 }
 
 
-void Auth::Register(User& Person) {
+void Authentication::Register(User& Person) {
 
 	std::string temp_Login, temp_Password, temp_PhoneNumber;
 	int x = 3, y = 3;
 
 	Frame();
 	gotoxy(34, 1);
+	SetColor(LightGreen, Black);
 	std::cout << "РЕГИСТРАЦИЯ";
 
 
 	//LOGIN
+	SetColor(White, Black);
 	gotoxy(x, y);
 	std::cout << "Логин: ";
 	std::getline(cin, temp_Login);
@@ -128,33 +132,70 @@ void Auth::Register(User& Person) {
 
 }
 
-void Auth::Аuth(User& Person) {
+void Authentication::Аuth(User& Person) {
 
-	std::string temp_Login, temp_Password, temp_PhoneNumber;
+	std::string temp_Login, temp_Password, filePassword;
+
+	Frame();
+
+	gotoxy(34, 1);
+	SetColor(LightGreen, Black);
+	cout << "АВТОРИЗАЦИЯ";
 
 	int x = 3, y = 3;
-	//Frame();
 
-	std::cout << "Логин:";
+	SetColor(White, Black);
+	gotoxy(x, y);
+	
+	std::cout << "Логин: ";
 	std::getline(cin, temp_Login);
 	
-	std::cout << "Пароль:";
-	std::getline(cin, temp_Password);
-	Person.setPassword(temp_Password);
-
 	ifstream regFile("UsersDB//" + temp_Login + ".txt");
+	if (!regFile) {
+
+		system("cls");
+		Frame();
+		gotoxy(28, 9);
+		SetColor(LightRed, Black);
+		cout << "Пользователь не найден!" << endl;
+
+		exit(0);
+	}
+	std::getline(regFile, temp_Login);
+	
+	gotoxy(x, ++y);
+	std::cout << "Пароль: ";
+	std::getline(cin, temp_Password);
+	//Person.setPassword(temp_Password);
+
+	
 
 	if (regFile.is_open()) {
-		string storedPassword;
-		std::getline(regFile, storedPassword);
-		if (storedPassword == temp_Password) {
+		
+		system("cls");
+		Frame();
+
+		std::getline(regFile, filePassword);
+		if (filePassword == temp_Password) {
+			gotoxy(29, 9);
+			SetColor(LightGreen, Black);
 			cout << "Авторизация успешна!" << endl;
 			regFile.close();
-			system("pause");
+			Sleep(1500);
+			
 		}
-	}
-	cout << "Неверный логин или пароль." << endl;
-	regFile.close();
+		else {
+			gotoxy(26, 9);
+			SetColor(LightRed, Black);
+			cout << "Неверный логин или пароль" << endl;
+			regFile.close();
+			Sleep(1500);
+		}
+	} 
+	
+
+	
+	
 	
 
 

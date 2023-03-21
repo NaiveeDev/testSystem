@@ -44,11 +44,11 @@
     <ClInclude Include="stringVars.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>User</Filter>
-    </ClInclude>
     <ClInclude Include="Auth.h">
       <Filter>Auth</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>User</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
