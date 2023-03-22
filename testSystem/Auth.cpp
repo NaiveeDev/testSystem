@@ -163,11 +163,9 @@ void Auth::Register(User& Person) {
 }
 
 void Auth::Login(User& Person) {
-
-	std::string temp_Login, temp_Password, filePassword;
-
+	
+	std::string temp_Login, temp_Password, filePassword;	
 	Frame();
-
 	gotoxy(34, 1);
 	SetColor(LightGreen, Black);
 	cout << "АВТОРИЗАЦИЯ";
@@ -176,10 +174,13 @@ void Auth::Login(User& Person) {
 
 	SetColor(White, Black);
 	gotoxy(x, y);
-	
+
 	cout << "Логин: ";
 	std::getline(std::cin, temp_Login);
-	
+	if (GetAsyncKeyState(VK_ESCAPE)) {
+		exit(0);
+	}
+
 	std::ifstream regFile("UsersDB//" + temp_Login + ".txt");
 	if (!regFile) {
 
@@ -208,7 +209,7 @@ void Auth::Login(User& Person) {
 	}
 
 	if (regFile.is_open()) {
-		
+
 		system("cls");
 		Frame();
 
@@ -221,7 +222,8 @@ void Auth::Login(User& Person) {
 			Sleep(1500);
 			system("cls");
 			SetColor(White, Black);
-			
+			Auth* instance = new Auth();
+			instance->AuthMenu(Person);
 		}
 		else {
 			gotoxy(26, 9);
@@ -231,18 +233,11 @@ void Auth::Login(User& Person) {
 			Sleep(1500);
 			system("cls");
 			SetColor(White, Black);
-
 			Auth* instance = new Auth();
 			instance->AuthMenu(Person);
-
 		}
-	} 
+	}
 	
-
-	
-	
-	
-
 
 }
 
