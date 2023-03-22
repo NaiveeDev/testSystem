@@ -200,7 +200,6 @@ void Auth::Login(User& Person) {
 	gotoxy(x, ++y);
 	std::cout << "Пароль: ";
 	std::getline(std::cin, temp_Password);
-	//Person.setPassword(temp_Password);
 
 	std::getline(regFile, filePassword);
 
@@ -213,15 +212,11 @@ void Auth::Login(User& Person) {
 		system("cls");
 		Frame();
 
-		
-
-		
 
 		if (filePassword == md5(temp_Password)) {
 			gotoxy(29, 9);
 			SetColor(LightGreen, Black);
 			cout << "Авторизация успешна!" << endl;
-			
 			regFile.close();
 			Sleep(1500);
 			system("cls");
@@ -275,7 +270,7 @@ void Auth::AuthMenu(User& Person) {
 	case 1:
 		Login(Person);
 	case 2:
-		//ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
+		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
 		AuthMenu(Person);
 	default:
 		break;
