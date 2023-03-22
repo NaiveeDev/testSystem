@@ -20,7 +20,7 @@ void AlreadyLogin(User Person) {
 
 		SetColor(LightRed, Black);
 		Frame();
-		gotoxy(x, y);
+		gotoxy(24, 9);
 
 		std::cout << "Пользователь уже зарегистрирован!" << std::endl;
 		Sleep(1200);
@@ -28,7 +28,26 @@ void AlreadyLogin(User Person) {
 		SetColor(White, Black);
 		Auth* instance = new Auth();
 		instance->AuthMenu(Person);
-	}	
+	}
+	if (Person.getLogin().empty()) {
+
+		int x, y;
+		x = 2;
+		y = 1;
+
+		SetColor(LightRed, Black);
+		Frame();
+		gotoxy(32, 9);
+
+		std::cout << "Вы не ввели логин!" << std::endl;
+		Sleep(1200);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
+
+	}
+
 }
 
 //PASSWORD VALIDATION
@@ -41,7 +60,7 @@ bool withSpace(const std::string& str) {
 }
 void PasswordValid(User Person, std::string TempPassword) {
 
-	if (withSpace(TempPassword))
+	if (withSpace(TempPassword) || TempPassword.empty())
 	{
 		int x, y;
 		x = 2;
@@ -174,9 +193,8 @@ void Auth::Login(User& Person) {
 		SetColor(White, Black);
 		Auth* instance = new Auth();
 		instance->AuthMenu(Person);
-
-
 	}
+
 	std::getline(regFile, temp_Login);
 	
 	gotoxy(x, ++y);
@@ -184,18 +202,26 @@ void Auth::Login(User& Person) {
 	std::getline(std::cin, temp_Password);
 	//Person.setPassword(temp_Password);
 
-	
+	std::getline(regFile, filePassword);
+
+	if (temp_Login == "root" && filePassword == md5(temp_Password)) {
+		AdminMenu(Person);
+	}
 
 	if (regFile.is_open()) {
 		
 		system("cls");
 		Frame();
 
-		std::getline(regFile, filePassword);
+		
+
+		
+
 		if (filePassword == md5(temp_Password)) {
 			gotoxy(29, 9);
 			SetColor(LightGreen, Black);
 			cout << "Авторизация успешна!" << endl;
+			
 			regFile.close();
 			Sleep(1500);
 			system("cls");
@@ -249,12 +275,32 @@ void Auth::AuthMenu(User& Person) {
 	case 1:
 		Login(Person);
 	case 2:
-
-		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
+		//ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
 		AuthMenu(Person);
 	default:
 		break;
 	}
 	
+
+}
+
+void Auth::AdminMenu(User& Person) {
+
+	Frame();
+	ConsoleCursor(false);
+
+	Menu menu;
+
+	
+
+	std::vector<std::string> objAMenu{
+		"> ДОБАВИТЬ АДМИНА",
+		"> РЕДАКТИРОВАНИЕ",
+		"> УПРАВЛЕНИЕ ТЕСТАМИ",
+		"> ВЫЙТИ"
+	};
+
+
+	int select = menu.select_vertical(objAMenu, Center, 8);
 
 }
