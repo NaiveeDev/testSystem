@@ -178,17 +178,11 @@ void Auth::Login(User& Person) {
 	cout << "АВТОРИЗАЦИЯ";
 	int x = 3, y = 3;
 	SetColor(White, Black);
-
-	
 	
 	gotoxy(x, y);
 	cout << "Логин: ";
 	std::getline(std::cin, temp_Login);
 	
-	
-
-	
-
 	isUser = fs::exists("UsersDB//" + temp_Login + ".txt");
 	isAdmin = fs::exists("AdminsDB//" + temp_Login + ".txt");
 
