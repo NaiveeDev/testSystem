@@ -1,5 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 #include <string>
 #include <math.h>
 #include <Windows.h>
@@ -10,4 +12,4 @@
 #include <conio.h>
 #include <vector>
 #include <string.h>
-#include <fstream>
+

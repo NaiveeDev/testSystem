@@ -1,10 +1,15 @@
-﻿#include "Auth.h"
+﻿#pragma comment(lib,"shell32")
+#include "Auth.h"
 #include "menuFunc.h"
 #include "md5.h"
-#pragma comment(lib,"shell32")
+#include <filesystem>
+
 
 
 using std::cout; using std::endl;
+
+
+namespace fs = std::filesystem;
 
 
 //LOGIN VALIDATION
@@ -165,78 +170,132 @@ void Auth::Register(User& Person) {
 void Auth::Login(User& Person) {
 
 	std::string temp_Login, temp_Password, filePassword;
+	bool isUser, isAdmin;
 
 	Frame();
-
 	gotoxy(34, 1);
 	SetColor(LightGreen, Black);
 	cout << "АВТОРИЗАЦИЯ";
-
 	int x = 3, y = 3;
-
 	SetColor(White, Black);
-	gotoxy(x, y);
+
 	
+	
+	gotoxy(x, y);
 	cout << "Логин: ";
 	std::getline(std::cin, temp_Login);
 	
-	std::ifstream regFile("UsersDB//" + temp_Login + ".txt");
-	if (!regFile) {
-
-		system("cls");
-		Frame();
-		gotoxy(28, 9);
-		SetColor(LightRed, Black);
-		cout << "Пользователь не найден!" << endl;
-		Sleep(1200);
-		system("cls");
-		SetColor(White, Black);
-		Auth* instance = new Auth();
-		instance->AuthMenu(Person);
-	}
-
-	std::getline(regFile, temp_Login);
 	
-	gotoxy(x, ++y);
-	std::cout << "Пароль: ";
-	std::getline(std::cin, temp_Password);
 
-	std::getline(regFile, filePassword);
+	
 
-	if (temp_Login == "root" && filePassword == md5(temp_Password)) {
-		AdminMenu(Person);
-	}
+	isUser = fs::exists("UsersDB//" + temp_Login + ".txt");
+	isAdmin = fs::exists("AdminsDB//" + temp_Login + ".txt");
 
-	if (regFile.is_open()) {
-		
-		system("cls");
-		Frame();
+	if (isUser) {
 
+		std::ifstream regFile("UsersDB//" + temp_Login + ".txt");
 
-		if (filePassword == md5(temp_Password)) {
-			gotoxy(29, 9);
-			SetColor(LightGreen, Black);
-			cout << "Авторизация успешна!" << endl;
-			regFile.close();
-			Sleep(1500);
+		if (!regFile) {
+
 			system("cls");
-			SetColor(White, Black);
-			
-		}
-		else {
-			gotoxy(26, 9);
+			Frame();
+			gotoxy(28, 9);
 			SetColor(LightRed, Black);
-			cout << "Неверный логин или пароль" << endl;
-			regFile.close();
-			Sleep(1500);
+			cout << "Пользователь не найден!" << endl;
+			Sleep(1200);
 			system("cls");
 			SetColor(White, Black);
-
 			Auth* instance = new Auth();
 			instance->AuthMenu(Person);
-
 		}
-	} 
+
+		std::getline(regFile, temp_Login);
+
+		gotoxy(x, ++y);
+		std::cout << "Пароль: ";
+		std::getline(std::cin, temp_Password);
+
+		std::getline(regFile, filePassword);
+
+		if (regFile.is_open()) {
+
+			system("cls");
+			Frame();
+
+
+			if (filePassword == md5(temp_Password)) {
+				gotoxy(29, 9);
+				SetColor(LightGreen, Black);
+				cout << "Авторизация успешна!" << endl;
+				regFile.close();
+				Sleep(1500);
+				system("cls");
+				SetColor(White, Black);
+
+			}
+			else {
+				gotoxy(26, 9);
+				SetColor(LightRed, Black);
+				cout << "Неверный логин или пароль" << endl;
+				regFile.close();
+				Sleep(1500);
+				system("cls");
+				SetColor(White, Black);
+
+				Auth* instance = new Auth();
+				instance->AuthMenu(Person);
+
+			}
+		}
+	}
+
+	if (isAdmin) {
+		
+		std::ifstream AdminFile("AdminsDB//" + temp_Login + ".txt");
+
+		std::getline(AdminFile, temp_Login);
+
+		gotoxy(x, ++y);
+		std::cout << "Пароль: ";
+		std::getline(std::cin, temp_Password);
+
+		std::getline(AdminFile, filePassword);
+
+		if (AdminFile.is_open()) {
+
+			system("cls");
+			Frame();
+
+
+			if (filePassword == md5(temp_Password)) {
+				gotoxy(29, 9);
+				SetColor(LightGreen, Black);
+				cout << "Авторизация успешна!" << endl;
+				AdminFile.close();
+				Sleep(1500);
+				system("cls");
+				SetColor(White, Black);
+				AdminMenu(Person);
+			}
+			else {
+				gotoxy(26, 9);
+				SetColor(LightRed, Black);
+				cout << "Неверный логин или пароль" << endl;
+				AdminFile.close();
+				Sleep(1500);
+				system("cls");
+				SetColor(White, Black);
+
+				Auth* instance = new Auth();
+				instance->AuthMenu(Person);
+			}
+		}
+
+		
+	}
+
+	
 	
 
 	
@@ -267,11 +326,14 @@ void Auth::AuthMenu(User& Person) {
 	{
 	case 0:
 		Register(Person);
+		break;
 	case 1:
 		Login(Person);
+		break;
 	case 2:
 		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
 		AuthMenu(Person);
+		break;
 	default:
 		break;
 	}
