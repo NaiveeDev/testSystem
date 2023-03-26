@@ -13,45 +13,90 @@ namespace fs = std::filesystem;
 
 
 //LOGIN VALIDATION
-void AlreadyLogin(User Person) {
+void AlreadyLogin(User Person, bool adminFlag = false) {
 
-	std::ifstream File("UsersDB//" + Person.getLogin() + ".txt");
+	if (!adminFlag) {
+		std::ifstream File("UsersDB//" + Person.getLogin() + ".txt");
 
-	if (File) {
+		if (File) {
 
-		int x, y;
-		x = 2;
-		y = 1;
+			int x, y;
+			x = 2;
+			y = 1;
 
-		SetColor(LightRed, Black);
-		Frame();
-		gotoxy(24, 9);
+			SetColor(LightRed, Black);
+			Frame();
+			gotoxy(24, 9);
 
-		std::cout << "Пользователь уже зарегистрирован!" << std::endl;
-		Sleep(1200);
-		system("cls");
-		SetColor(White, Black);
-		Auth* instance = new Auth();
-		instance->AuthMenu(Person);
+			std::cout << "Пользователь уже зарегистрирован!" << std::endl;
+			Sleep(1200);
+			system("cls");
+			SetColor(White, Black);
+			Auth* instance = new Auth();
+			instance->AuthMenu(Person);
+		}
+		if (Person.getLogin().empty()) {
+
+			int x, y;
+			x = 2;
+			y = 1;
+
+			SetColor(LightRed, Black);
+			Frame();
+			gotoxy(32, 9);
+
+			std::cout << "Вы не ввели логин!" << std::endl;
+			Sleep(1200);
+			system("cls");
+			SetColor(White, Black);
+			Auth* instance = new Auth();
+			instance->AuthMenu(Person);
+
+		}
 	}
-	if (Person.getLogin().empty()) {
+	else {
+		std::ifstream AdminFile("AdminsDB//" + Person.getLogin() + ".txt");
 
-		int x, y;
-		x = 2;
-		y = 1;
+		if (AdminFile) {
 
-		SetColor(LightRed, Black);
-		Frame();
-		gotoxy(32, 9);
+			int x, y;
+			x = 2;
+			y = 1;
 
-		std::cout << "Вы не ввели логин!" << std::endl;
-		Sleep(1200);
-		system("cls");
-		SetColor(White, Black);
-		Auth* instance = new Auth();
-		instance->AuthMenu(Person);
+			SetColor(LightRed, Black);
+			Frame();
+			gotoxy(24, 9);
 
+			std::cout << "Пользователь уже зарегистрирован!" << std::endl;
+			Sleep(1200);
+			system("cls");
+			SetColor(White, Black);
+			Auth* instance = new Auth();
+			instance->AdminMenu(Person);
+		}
+		/*if (Person.getLogin().empty()) {
+
+			int x, y;
+			x = 2;
+			y = 1;
+
+			SetColor(LightRed, Black);
+			Frame();
+			gotoxy(32, 9);
+
+			std::cout << "Вы не ввели логин!" << std::endl;
+			Sleep(1200);
+			system("cls");
+			SetColor(White, Black);
+			Auth* instance = new Auth();
+			instance->AdminMenu(Person);
+
+		}*/
 	}
+	
+	
+	
+
 
 }
 
@@ -182,6 +227,7 @@ void Auth::Login(User& Person) {
 	gotoxy(x, y);
 	cout << "Логин: ";
 	std::getline(std::cin, temp_Login);
+	Person.setLogin(temp_Login);
 	
 	isUser = fs::exists("UsersDB//" + temp_Login + ".txt");
 	isAdmin = fs::exists("AdminsDB//" + temp_Login + ".txt");
@@ -340,12 +386,20 @@ void Auth::AdminMenu(User& Person) {
 	Frame();
 	ConsoleCursor(false);
 
+	int x = 57, y = 2;
+	gotoxy(x, y);
+
+	cout << "Вы вошли как: ";
+	SetColor(LightRed, Black);
+	cout << Person.getLogin();
+
+	SetColor(White, Black);
+
+
 	Menu menu;
 
-	
-
-	std::vector<std::string> objAMenu{
-		"> ДОБАВИТЬ АДМИНА",
+	std::vector<std::string> objAMenu {
+		"> УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ",
 		"> РЕДАКТИРОВАНИЕ",
 		"> УПРАВЛЕНИЕ ТЕСТАМИ",
 		"> ВЫЙТИ"
@@ -353,5 +407,61 @@ void Auth::AdminMenu(User& Person) {
 
 
 	int select = menu.select_vertical(objAMenu, Center, 8);
+
+	switch (select)
+	{
+
+	case 0:
+		AddAdmin(Person);
+
+	default:
+		break;
+	}
+
+}
+
+void Auth::AddAdmin(User& Person) {
+
+	Frame();
+	int x, y;
+	std::string Login, Password, PhoneNumber;
+	SetColor(LightGreen, Black);
+	gotoxy(x = 10, y = 2);
+	
+	cout << "Чтобы добавить Админа, заполните поля ниже.";
+	gotoxy(x = 13, y = 3);
+	cout << "Если пользователь уже существует, он получит права Админа";
+
+	SetColor(White, Black);
+	gotoxy(x = 3, y = 6);
+	cout << "Логин: ";
+	std::getline(std::cin, Login);
+	Person.setLogin(Login);
+	AlreadyLogin(Person, true);
+
+	gotoxy(x = 3, y = 7);
+	cout << "Пароль: ";
+	std::getline(std::cin, Password);
+	Person.setPassword(Password);
+	PasswordValid(Person, Password);
+
+	gotoxy(x = 3, y = 8);
+	cout << "Телефон: ";
+	std::getline(std::cin, PhoneNumber);
+	Person.setPhoneNumber(PhoneNumber);
+	PhoneNumberValid(Person);
+
+	std::ofstream File("AdminsDB//" + Person.getLogin() + ".txt", std::ios::app);
+	if (File.is_open()) {
+		File << Person.getLogin() << "\n";
+		File << md5(Person.getPassword()) << "\n";
+		File << Person.getPhoneNumber();
+		File.close();
+		AdminMenu(Person);
+	}
+	else {
+		SetColor(LightRed, Black);
+		std::cerr << "Ошибка, файл не открыт!\n";
+	}
 
 }

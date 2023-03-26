@@ -11,5 +11,6 @@ public:
 	void Login(User& Person);
 	void AuthMenu(User& Person);
 	void AdminMenu(User& Person);
+	void AddAdmin(User& Person);
 
 };

@@ -12,9 +12,13 @@ int main(int argc, char* argv[]) {
     //Task
     //3. Администратора
     
+    //test
+    User Person;
+    Auth auth;
+
 
     Application app;
     app.run();
-
+    //auth.AddAdmin(Person);
 }
 
