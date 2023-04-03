@@ -1,5 +1,6 @@
 ﻿#pragma comment(lib,"shell32")
 #include "Auth.h"
+#include "Test.h"
 #include "menuFunc.h"
 #include "md5.h"
 #include <filesystem>
@@ -350,6 +351,7 @@ void Auth::AuthMenu(User& Person) {
 	Frame();
 	ConsoleCursor(false);
 
+	Test test;
 	Menu menu;
 
 	std::vector<std::string> objMenu { 
@@ -369,6 +371,7 @@ void Auth::AuthMenu(User& Person) {
 		break;
 	case 1:
 		Login(Person);
+		test.TestMenu(Person);
 		break;
 	case 2:
 		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);

@@ -9,7 +9,7 @@ void Test::TestMenu(User& Person) {
 
 	Menu menu;
 
-	std::vector<std::string> objMenu{
+	std::vector<std::string> objTest{
 		"> Õ¿◊¿“‹ “≈—“",
 		"> œ–ŒƒŒÀ∆»“‹ “≈—“",
 		"> —“¿“»—“» ¿",
@@ -17,7 +17,7 @@ void Test::TestMenu(User& Person) {
 	};
 
 
-	int test_select = menu.select_vertical(objMenu, Center, 8);
+	int test_select = menu.select_vertical(objTest, Center, 8);
 
 	switch (test_select)
 	{
@@ -25,9 +25,7 @@ void Test::TestMenu(User& Person) {
 		StartTest(Person);
 
 
-	case 4:
-		exit(0);
-		break;
+	
 	}
 
 }
