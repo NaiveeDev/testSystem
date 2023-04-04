@@ -1,3 +1,4 @@
+#include "menuFunc.h"
 #include "Test.h"
 
 
@@ -22,9 +23,7 @@ void Test::TestMenu(User& Person) {
 	{
 	case 0:
 		StartTest(Person);
-		break;
-	default:
-		break;
+
 
 	
 	}

@@ -1,4 +1,6 @@
 ﻿#include "imports.h"
+#include "Auth.h"
+#include "User.h"
 #include "Application.h"
 #include "md5.h"
 
@@ -6,13 +8,17 @@
 
 
 int main(int argc, char* argv[]) {
-  
-
     
-    Application App;
+    //Task
+    //3. Администратора
+    
+    //test
+    User Person;
+    Auth auth;
 
-    App.run();
 
+    Application app;
+    app.run();
     //auth.AddAdmin(Person);
 }
 

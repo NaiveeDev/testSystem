@@ -1,12 +1,11 @@
 #pragma once
-#include "menuFunc.h"
+#include "imports.h"
 #include "User.h"
 
 
 
 class Test {
 
-public:
 	void TestMenu(User& Person);
 	void StartTest(User& Person);
 	void ContinueTest(User& Person);

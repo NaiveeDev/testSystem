@@ -336,14 +336,22 @@ void Auth::Login(User& Person) {
 		
 	}
 
+	
+	
+
+	
+	
+	
+
+
 }
 
 void Auth::AuthMenu(User& Person) {
 	
 	Frame();
-	
 	ConsoleCursor(false);
-	
+
+	Test test;
 	Menu menu;
 
 	std::vector<std::string> objMenu { 
@@ -363,6 +371,7 @@ void Auth::AuthMenu(User& Person) {
 		break;
 	case 1:
 		Login(Person);
+		test.TestMenu(Person);
 		break;
 	case 2:
 		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
@@ -378,7 +387,7 @@ void Auth::AuthMenu(User& Person) {
 void Auth::AdminMenu(User& Person) {
 
 	Frame();
-	
+	ConsoleCursor(false);
 
 	int x = 57, y = 2;
 	gotoxy(x, y);
