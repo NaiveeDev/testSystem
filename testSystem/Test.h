@@ -6,6 +6,7 @@
 
 class Test {
 
+public:
 	void TestMenu(User& Person);
 	void StartTest(User& Person);
 	void ContinueTest(User& Person);

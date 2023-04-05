@@ -349,7 +349,7 @@ void Auth::Login(User& Person) {
 void Auth::AuthMenu(User& Person) {
 	
 	Frame();
-	ConsoleCursor(false);
+	//ConsoleCursor(false);
 
 	Test test;
 	Menu menu;
