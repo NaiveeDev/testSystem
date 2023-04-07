@@ -1,7 +1,6 @@
 ﻿#pragma comment(lib,"shell32")
 #include "Auth.h"
 #include "Test.h"
-#include "menuFunc.h"
 #include "md5.h"
 #include <filesystem>
 
@@ -273,7 +272,6 @@ void Auth::Login(User& Person) {
 				Sleep(1500);
 				system("cls");
 				SetColor(White, Black);
-
 			}
 			else {
 				gotoxy(26, 9);
@@ -335,24 +333,15 @@ void Auth::Login(User& Person) {
 
 		
 	}
-
-	
-	
-
-	
-	
-	
-
-
 }
 
 void Auth::AuthMenu(User& Person) {
 	
 	Frame();
-	//ConsoleCursor(false);
+	
 
-	Test test;
-	Menu menu;
+	Test Test;
+	Menu aMenu;
 
 	std::vector<std::string> objMenu { 
 		"> ЗАРЕГИСТРИРОВАТЬСЯ", 
@@ -362,16 +351,15 @@ void Auth::AuthMenu(User& Person) {
 	};
 
 
-	int select = menu.select_vertical(objMenu, Center, 8);
+	int AMselect = aMenu.select_vertical(objMenu, Center, 8);
 
-	switch (select)
+	switch (AMselect)
 	{
 	case 0:
 		Register(Person);
 		break;
 	case 1:
 		Login(Person);
-		test.TestMenu(Person);
 		break;
 	case 2:
 		ShellExecute(0, L"open", L"https://github.com/NaiveeDev/testSystem", NULL, NULL, SW_SHOWDEFAULT);
@@ -387,7 +375,7 @@ void Auth::AuthMenu(User& Person) {
 void Auth::AdminMenu(User& Person) {
 
 	Frame();
-	ConsoleCursor(false);
+	
 
 	int x = 57, y = 2;
 	gotoxy(x, y);
@@ -399,7 +387,7 @@ void Auth::AdminMenu(User& Person) {
 	SetColor(White, Black);
 
 
-	Menu menu;
+	Menu AdmMenu;
 
 	std::vector<std::string> objAMenu {
 		"> УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ",
@@ -409,16 +397,16 @@ void Auth::AdminMenu(User& Person) {
 	};
 
 
-	int select = menu.select_vertical(objAMenu, Center, 8);
+	int Aselect = AdmMenu.select_vertical(objAMenu, Center, 8);
 
-	switch (select)
+	switch (Aselect)
 	{
 
 	case 0:
 		AddAdmin(Person);
-
 	default:
 		break;
+
 	}
 
 }

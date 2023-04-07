@@ -1,6 +1,9 @@
-#include "menuFunc.h"
+
 #include "Test.h"
 
+
+void Test::StartTest(User& Person) {
+}
 
 void Test::TestMenu(User& Person) {
 
@@ -30,8 +33,6 @@ void Test::TestMenu(User& Person) {
 
 }
 
-void Test::StartTest(User& Person) {
-}
 
 void Test::ContinueTest(User& Person) {
 }

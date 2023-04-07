@@ -4,5 +4,6 @@
 void Application::run() {
 
 	Auth.AuthMenu(Person);
+	
 
 }

@@ -13,8 +13,8 @@ int main(int argc, char* argv[]) {
     //3. Администратора
     
     //test
-    User Person;
-    Auth auth;
+    //User Person;
+    //Auth auth;
 
 
     Application app;

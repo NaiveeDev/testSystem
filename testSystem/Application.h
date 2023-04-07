@@ -1,6 +1,7 @@
 #include "Auth.h"
+#include "Test.h"
 #include "User.h"
-//#include "imports.h"
+
 
 
 
@@ -8,6 +9,7 @@ class Application {
 
 	User Person;
 	Auth Auth;
+	//Test Test;
 
 public:
 

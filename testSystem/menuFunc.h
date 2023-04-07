@@ -183,13 +183,13 @@ public:
 
 };
 
-void ConsoleCursor(bool isVisible = true) {
-
-	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO cursorInfo;
-
-	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
-	cursorInfo.bVisible = isVisible;
-	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
-
-}
+//void ConsoleCursor(bool isVisible = true) {
+//
+//	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+//	CONSOLE_CURSOR_INFO cursorInfo;
+//
+//	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
+//	cursorInfo.bVisible = isVisible;
+//	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+//
+//}
