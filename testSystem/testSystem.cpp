@@ -9,10 +9,15 @@
 
 int main(int argc, char* argv[]) {
    
+    setlocale(LC_ALL, "ru");
 
+      
     Application app;
-    app.run();
+    User Person;
+    //app.run();
     
+    Test Test;
+    Test.TestMenu(Person);
 
 }
 

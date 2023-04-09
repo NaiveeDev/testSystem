@@ -216,6 +216,7 @@ void Auth::Login(User& Person) {
 
 	std::string temp_Login, temp_Password, filePassword;
 	bool isUser, isAdmin;
+	Test Test;
 
 	Frame();
 	gotoxy(34, 1);
@@ -232,23 +233,22 @@ void Auth::Login(User& Person) {
 	isUser = fs::exists("UsersDB//" + temp_Login + ".txt");
 	isAdmin = fs::exists("AdminsDB//" + temp_Login + ".txt");
 
+	if (!isUser && !isAdmin) {
+		system("cls");
+		Frame();
+		gotoxy(28, 9);
+		SetColor(LightRed, Black);
+		cout << "Пользователь не найден!" << endl;
+		Sleep(1200);
+		system("cls");
+		SetColor(White, Black);
+		Auth* instance = new Auth();
+		instance->AuthMenu(Person);
+	}
+
 	if (isUser) {
 
 		std::ifstream regFile("UsersDB//" + temp_Login + ".txt");
-
-		if (!regFile) {
-
-			system("cls");
-			Frame();
-			gotoxy(28, 9);
-			SetColor(LightRed, Black);
-			cout << "Пользователь не найден!" << endl;
-			Sleep(1200);
-			system("cls");
-			SetColor(White, Black);
-			Auth* instance = new Auth();
-			instance->AuthMenu(Person);
-		}
 
 		std::getline(regFile, temp_Login);
 
@@ -272,6 +272,7 @@ void Auth::Login(User& Person) {
 				Sleep(1500);
 				system("cls");
 				SetColor(White, Black);
+				Test.TestMenu(Person);
 			}
 			else {
 				gotoxy(26, 9);
