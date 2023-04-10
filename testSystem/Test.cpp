@@ -60,10 +60,32 @@ void Test::TestStat(User& Person) {
 void Test::StartTest(User& Person, std::string categoryName) {
 
 	Question quest;
+	Menu testMenu;
 
-	std::ifstream Test("QuestionsDB//" + categoryName);
+	std::ifstream category("QuestionsDB//" + categoryName + "//");
 
+	if (category.is_open()) {
 
+		std::vector <std::string> tests;
+
+		const std::string path = "QuestionsDB//" + categoryName;
+
+		for (const auto& entry : fs::directory_iterator(path)) {
+			if (entry.is_regular_file()) {
+				tests.push_back(entry.path().string());
+			}
+		}
+		for (const auto& filename : tests) {
+			std::cout << filename << std::endl;
+		}
+
+		int select_test = testMenu.select_vertical(tests, Center, 8);
+
+	}
+	if (!category)
+	{
+		std::cerr << "FAIL";
+	}
 
 
 }

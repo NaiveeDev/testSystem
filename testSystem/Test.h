@@ -4,13 +4,14 @@
 #include "Question.h"
 #include "User.h"
 
+namespace fs = std::filesystem;
 
 
 class Test {
 
 	std::vector<std::string> Categories {
-		"> ÌÀÒÅÌÀÒÈÊÀ",
-		"> ÃÅÎÃĞÀÔÈß",
+		"ÌÀÒÅÌÀÒÈÊÀ",
+		"ÃÅÎÃĞÀÔÈß",
 		"> ÍÀÇÀÄ",
 	};
 
